@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sys.manager.mapper.ComDictionaryMapper">
+    <update id="updateStatusByIdAndPid">
+        update com_dictionary
+        set status = 0 , updater = #{updater}
+        where id = #{id} or pid = #{id}
+    </update>
+
+    <select id="queryDicByTypeAndCode" resultType="com.sys.manager.entity.ComDictionary">
+        SELECT *
+        FROM com_dictionary cd
+        WHERE type = #{type}
+        AND CODE = #{code}
+    </select>
+
+    <select id="queryAllType" resultType="java.lang.String">
+        SELECT TYPE
+        FROM com_dictionary cd
+        GROUP BY cd.type
+    </select>
+
+    <select id="queryIndustry" resultType="com.sys.manager.pojo.KeyAndNameObject">
+         SELECT NAME as name,CODE as code
+         FROM com_dictionary cd
+         WHERE CODE is NOT null
+         AND cd.type = #{type}
+    </select>
+</mapper>

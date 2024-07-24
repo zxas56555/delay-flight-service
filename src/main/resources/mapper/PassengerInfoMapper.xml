@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sys.manager.mapper.PassengerInfoMapper">
+    <select id="selectPassenger" resultType="com.sys.manager.entity.PassengerInfo">
+        select * from passenger_info
+        where data_status = '1'
+        <if test="passenger.name != null and passenger.name != ''">
+            and name like concat('%', #{passenger.name}, '%')
+        </if>
+        <if test="passenger.sex != null and passenger.sex != ''">
+            and sex = #{passenger.sex}
+        </if>
+        <if test="passenger.cardId != null and passenger.cardId != ''">
+            and card_id like concat('%', #{passenger.cardId}, '%')
+        </if>
+        <if test="passenger.flightNum != null and passenger.flightNum != ''">
+            and flight_num like concat('%', #{passenger.flightNum}, '%')
+        </if>
+        <if test="passenger.flightDate != null">
+            and DATE_FORMAT(flight_date, '%Y-%m-%d') = DATE_FORMAT(#{passenger.flightDate}, '%Y-%m-%d')
+        </if>
+        <if test="passenger.flightStartDate != null">
+            and DATE_FORMAT(flight_date, '%Y-%m-%d') >= DATE_FORMAT(#{passenger.flightStartDate}, '%Y-%m-%d')
+        </if>
+        <if test="passenger.flightEndDate != null">
+            and DATE_FORMAT(flight_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{passenger.flightEndDate}, '%Y-%m-%d')
+        </if>
+        <if test="passenger.boardingGate != null and passenger.boardingGate != ''">
+            and boarding_gate = #{passenger.boardingGate}
+        </if>
+        <if test="passenger.shippingSpace != null and passenger.shippingSpace != ''">
+            and shipping_space = #{passenger.shippingSpace}
+        </if>
+        <if test="passenger.seat != null and passenger.seat != ''">
+            and seat = #{passenger.seat}
+        </if>
+        <if test="passenger.startCity != null and passenger.startCity != ''">
+            and start_city like concat('%', #{passenger.startCity}, '%')
+        </if>
+        <if test="passenger.arriveCity != null and passenger.arriveCity != ''">
+            and arrive_city like concat('%', #{passenger.arriveCity}, '%')
+        </if>
+        <if test="passenger.isDeal != null and passenger.isDeal != ''">
+            and is_deal = #{passenger.isDeal}
+        </if>
+    </select>
+    <select id="selectExist" resultType="com.sys.manager.entity.PassengerInfo">
+        select * from passenger_info
+        where data_status = '1' and flight_num = #{flightNum} and card_id = #{cardId}
+          and DATE_FORMAT(flight_date, '%Y-%m-%d') = #{passenger.flightDate}
+    </select>
+</mapper>

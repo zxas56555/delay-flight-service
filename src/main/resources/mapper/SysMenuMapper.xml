@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sys.manager.mapper.SysMenuMapper">
+
+    <select id="selectMenus" resultType="com.sys.manager.entity.SysMenu">
+        select * from sys_menu sm where status = '1'
+        and id in
+        <foreach collection="ids" item="item" open="(" close=")" separator=",">
+            #{item}
+        </foreach>
+        order by m_order
+    </select>
+    <select id="selectOption" resultType="com.sys.manager.entity.SysMenu">
+        select  id, title, status, parent_id from sys_menu  order by m_order
+    </select>
+</mapper>

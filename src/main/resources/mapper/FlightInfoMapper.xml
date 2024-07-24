@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sys.manager.mapper.FlightInfoMapper">
+    <select id="selectFlight" resultType="com.sys.manager.entity.FlightInfo">
+        select * from flight_info
+        where data_status = '1'
+        <if test="flight.flightCompany != null and flight.flightCompany != ''">
+            and flight_company like concat('%', #{flight.flightCompany}, '%')
+        </if>
+        <if test="flight.flightNum != null and flight.flightNum != ''">
+            and flight_num like concat('%', #{flight.flightNum}, '%')
+        </if>
+        <if test="flight.flightStartDate != null">
+            and DATE_FORMAT(flight_date, '%Y-%m-%d') >= DATE_FORMAT(#{flight.flightStartDate}, '%Y-%m-%d')
+        </if>
+        <if test="flight.flightEndDate != null">
+            and DATE_FORMAT(flight_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{flight.flightEndDate}, '%Y-%m-%d')
+        </if>
+        <if test="flight.flightStatus != null and flight.flightStatus != ''">
+            and flight_status = #{flight.flightStatus}
+        </if>
+        <if test="flight.startCity != null and flight.startCity != ''">
+            and start_city like concat('%', #{flight.startCity}, '%')
+        </if>
+        <if test="flight.arriveCity != null and flight.arriveCity != ''">
+            and arrive_city like concat('%', #{flight.arriveCity}, '%')
+        </if>
+    </select>
+</mapper>

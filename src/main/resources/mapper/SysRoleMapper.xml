@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sys.manager.mapper.SysRoleMapper">
+    <select id="selectMenuIds" resultType="java.lang.String">
+        select menu_ids from sys_role sr where status = '1' and role_id = #{roleId}
+    </select>
+    <select id="selectOption" resultType="java.util.Map">
+        select role_id as "value", role_name as "label"
+         from sys_role
+    </select>
+    <select id="selectRoleId" resultType="java.lang.Integer">
+        select role_id from sys_role where role_id = #{roleId}
+    </select>
+</mapper>

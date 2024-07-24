@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sys.manager.mapper.UnitInfoMapper">
+    <select id="selectChildrenByPid" resultType="com.sys.manager.entity.UnitInfo">
+        select *, id as unitId from unit_info
+        where pid = #{pid} and status = '1'
+    </select>
+    <select id="selectIds" resultType="com.sys.manager.pojo.NameAndList">
+        select ui.id as unitId, ui.unit_name as unitName
+        from unit_info ui
+        where ui.status = '1'
+    </select>
+    <select id="selectIdByName" resultType="java.lang.Integer">
+        select ui.id
+        from unit_info ui
+        where ui.unit_name = #{unitName} and ui.status = '1'
+    </select>
+    <select id="selectUnitName" resultType="java.lang.String">
+        select ui.unit_name
+        from unit_info ui
+        where ui.status = '1'
+        <if test="unitIdList != null and unitIdList.size > 0">
+            and ui.id in
+            <foreach collection="unitIdList" index="index" item="item" open="(" separator="," close=")">
+                #{item}
+            </foreach>
+        </if>
+    </select>
+</mapper>

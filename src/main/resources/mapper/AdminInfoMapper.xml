@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sys.manager.mapper.AdminInfoMapper">
+    <sql id="baseInfo">
+        a1.id, a1.name, a1.user_name, a1.gender, a1.avatar, a1.phone, a1.role_id, a1.status, a1.card_id,
+        a1.create_time, a1.update_time, a1.creator, a1.updater
+    </sql>
+    <select id="selectByIdCard" resultType="java.lang.String">
+        select card_id from admin_info where card_id = #{cardId} limit 1
+    </select>
+    <select id="selectByPageAndCon" parameterType="com.sys.manager.entity.AdminInfo" resultType="com.sys.manager.pojo.AdminInfoResult">
+        SELECT
+        <include refid="baseInfo"/>,
+        sr.role_name,
+        a2.name AS "creatorName", a3.name AS "updaterName"
+        FROM admin_info a1
+        LEFT JOIN sys_role sr ON sr.role_id = a1.role_id
+        LEFT JOIN admin_info a2 ON a2.id = a1.creator
+        LEFT JOIN admin_info a3 ON a3.id = a1.updater
+        where a1.status = '2'
+            <if test="adminInfo.id != null and adminInfo.id != ''">
+                AND a1.id = #{adminInfo.id}
+            </if>
+            <if test="adminInfo.name != null and adminInfo.name != ''">
+                AND a1.name LIKE CONCAT('%',#{adminInfo.name},'%')
+            </if>
+            <if test="adminInfo.userName != null and adminInfo.userName != ''">
+                AND a1.user_name LIKE CONCAT('%',#{adminInfo.userName},'%')
+            </if>
+            <if test="adminInfo.gender != null and adminInfo.gender != ''">
+                AND a1.gender = #{adminInfo.gender}
+            </if>
+            <if test="adminInfo.phone != null and adminInfo.phone != ''">
+                AND a1.phone = #{adminInfo.phone}
+            </if>
+            <if test="adminInfo.roleId != null and adminInfo.roleId != ''">
+                AND a1.role_id = #{adminInfo.roleId}
+            </if>
+            <if test="adminInfo.status != null and adminInfo.status != ''">
+                AND a1.status = #{adminInfo.status}
+            </if>
+            <if test="adminInfo.cardId != null and adminInfo.cardId != ''">
+                AND a1.card_id = #{adminInfo.cardId}
+            </if>
+        order by a1.id
+    </select>
+    <select id="selectAllConBYId" resultType="com.sys.manager.pojo.AdminInfoResult">
+        select
+        <include refid="baseInfo"/>,
+        r.role_name as roleName,
+        (select cd.name from com_dictionary cd where cd.code = a1.gender and cd.type = 'gender') as genderName,
+        a2.name as "creatorName",a3.name as "updaterName"
+        from admin_info a1
+        left join sys_role r on r.role_id = a1.role_id
+        left join admin_info a2 on a2.id = a1.creator
+        left join admin_info a3 on a3.id = a1.updater
+        where a1.id = #{id}
+    </select>
+    <select id="selectNameByUserId" resultType="java.lang.String">
+        select name from admin_info where id = #{userId}
+    </select>
+    <select id="selectRoleIdByUserId" resultType="java.lang.String">
+        select role_id from admin_info where id = #{userId}
+    </select>
+    <select id="selectNameByUserIds" resultType="com.sys.manager.pojo.AdminNameResult">
+        select id,name,avatar from admin_info where
+        <choose>
+            <when test="assignees != null and assignees.size > 0">
+                id in
+                <foreach item="item" index="index" collection="assignees" open="(" separator="," close=")">
+                    #{item}
+                </foreach>
+            </when>
+            <otherwise>
+                1=0
+            </otherwise>
+        </choose>
+    </select>
+
+    <select id="selectAdminById" resultType="com.sys.manager.entity.AdminInfo">
+        select *
+        from admin_info
+        where id = #{id}
+    </select>
+
+    <select id="selectExist" resultType="com.sys.manager.entity.AdminInfo">
+        select * from admin_info
+        where name = #{name}
+        and status in ('1', '2', '3')
+    </select>
+    <select id="selectIdByName" resultType="java.lang.Integer">
+        select id from admin_info
+        where name = #{name}
+    </select>
+    <update id="updatePassById">
+        update admin_info set password = #{password} where id = #{id}
+    </update>
+    <select id="selectAllCount" resultType="java.lang.Integer">
+        select count(1) from admin_info where status in ('1', '2', '3')
+    </select>
+    <select id="selectByUserAndPass" resultType="com.sys.manager.entity.AdminInfo">
+        select *
+        from admin_info a
+        where a.status = '2'and a.user_name = #{userName} and a.password = #{password}
+    </select>
+</mapper>

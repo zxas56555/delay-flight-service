@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sys.manager.mapper.AirportServiceMapper">
+    <select id="selectAll" resultType="com.sys.manager.entity.AirportService">
+        select air.*, fi.flight_status as flightStatus
+        from airport_service air
+        left flight_info fi on air.flight_id = fi.id
+        where air.data_status = '1'
+        <if test="airport.flightNum != null and airport.flightNum != ''">
+            and air.flight_num like concat('%', #{airport.flightNum}, '%')
+        </if>
+        <if test="airport.serviceStartTime != null">
+            and DATE_FORMAT(air.service_time, '%Y-%m-%d') >= DATE_FORMAT(#{airport.serviceStartTime}, '%Y-%m-%d')
+        </if>
+        <if test="airport.serviceEndTime != null">
+            and DATE_FORMAT(air.service_time, '%Y-%m-%d') &lt;= DATE_FORMAT(#{airport.serviceEndTime}, '%Y-%m-%d')
+        </if>
+        <if test="airport.flightStatus != null and airport.flightStatus != ''">
+            and fi.flight_status = #{airport.flightStatus}
+        </if>
+        <if test="shuttleIds != null and shuttleIds.size > 0">
+            <foreach collection="shuttleIds" item="item" open="" close="" separator="">
+                and (air.shuttle_ids like concat('%,', #{item}, ',%')
+                        or air.shuttle_ids like concat('%,', #{item})
+                        or air.shuttle_ids like concat(#{item}, ',%'))
+            </foreach>
+        </if>
+    </select>
+</mapper>

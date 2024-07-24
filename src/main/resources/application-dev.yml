@@ -1,0 +1,67 @@
+server:
+  port: 9060
+spring:
+  application:
+    name: delay-flight-service
+  datasource:
+#    url: jdbc:mysql://192.168.1.101:3306/delay_flight?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
+    url: jdbc:mysql://113.128.242.110:3306/delay_flight?serverTimezone=Asia/Shanghai&useUnicode=true&characterEncoding=utf8&useSSL=false
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    username: root
+    password: root@2024
+    druid:
+      filters: stat,wall
+      maxActive: 20
+      initialSize: 5
+      maxWait: 60000
+      minIdle: 5
+      timeBetweenEvictionRunsMillis: 60000
+      minEvictableIdleTimeMillis: 300000
+      validationQuery: select 'x'
+      testWhileIdle: true
+      testOnBorrow: false
+      testOnReturn: false
+      poolPreparedStatements: true
+      maxPoolPreparedStatementPerConnectionSize: 20
+      connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
+      maxOpenPreparedStatements: 20
+  redis:
+#    host: 192.168.1.101
+    host: 113.128.242.110
+    port: 6379
+    database: 1
+    password: sushengtian
+  servlet:
+    multipart:
+      max-file-size: 150MB        #上传单个文件最大大小，默认为1MB
+      max-request-size: 200MB    #多文件上传总大小，默认为10MB
+
+mybatis-plus:
+  mapper-locations: classpath*:mapper/**/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    call-setters-on-nulls: true
+    # 微服务架构中关闭一级缓存，防止别的服务更新后无法查询最新的数据
+    local-cache-scope: statement
+
+sys:
+  swagger:
+    enabled: true
+    description: 延误航班系统
+    base-package: com.sys.manager.controller
+    title: 延误航班系统
+    version: 1.0.0
+    author: author
+
+logging:
+  level:
+    org.activiti.engine.impl.persistence.entity: debug
+
+ignore:
+  whites:
+    - /v2/api-doc
+    - /api/user/admin/login
+    - /api/user/verifyCode
+    - /api/user/checkVerificationCode
+    - /api/user/addExpire
