@@ -41,5 +41,11 @@ public class HotelInfoController {
     public R<?> delHotel(@RequestParam Integer id) {
         return hotelInfoService.delHotel(id);
     }
+
+    @PostMapping("/deal")
+    @ApiOperation(value = "酒店处理乘客", httpMethod = "POST")
+    public R<?> deal(@RequestParam Integer passengerId) {
+        return hotelInfoService.deal(passengerId);
+    }
     
 }

@@ -27,10 +27,17 @@ public class PassengerInfoController {
         return passengerInfoService.selectPassenger(passenger, page, size);
     }
 
+    @Deprecated
     @PostMapping("/import")
     @ApiOperation(value = "导入旅客信息", httpMethod = "POST")
     public R<?> importPassenger(@RequestPart MultipartFile file) throws IOException {
         return passengerInfoService.importPassenger(file);
+    }
+
+    @PostMapping("/savePassenger")
+    @ApiOperation(value = "新增旅客信息", httpMethod = "POST")
+    public R<?> savePassenger(@RequestBody PassengerInfo passenger) throws IOException {
+        return passengerInfoService.savePassenger(passenger);
     }
 
 }

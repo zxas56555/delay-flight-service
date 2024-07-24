@@ -163,5 +163,18 @@ public class PassengerInfoServiceImpl extends ServiceImpl<PassengerInfoMapper, P
         }};
     }
 
+    @Override
+    public R<?> savePassenger(PassengerInfo passenger) {
+        Integer loginUserId = securityService.getLoginUserId();
+        PassengerInfo exist = passengerInfoMapper.selectExist(passenger.getFlightNum(), passenger.getFlightDateStr(), passenger.getCardId());
+        if (exist == null) {
+            passenger.setCreator(loginUserId);
+            passengerInfoMapper.insert(passenger);
+            return R.ok();
+        } else {
+            return R.fail("已扫描该乘客");
+        }
+    }
+
 }
 

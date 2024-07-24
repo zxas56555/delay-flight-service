@@ -20,5 +20,7 @@ public interface PassengerInfoMapper extends BaseMapper<PassengerInfo> {
                               @Param("flightDateStr") String flightDateStr,
                               @Param("cardId") String cardId);
 
+    int updDeal(@Param("id") Integer passengerId);
+
 }
 

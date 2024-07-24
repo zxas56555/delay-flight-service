@@ -33,6 +33,7 @@ public class AirportServiceController {
      * @return 所有数据
      */
     @GetMapping("/query")
+    @ApiOperation(value = "查询服务", httpMethod = "GET")
     public R<?> selectAll(AirportService airportService,
                           @RequestParam(required = false, defaultValue = "1") Integer page,
                           @RequestParam(required = false, defaultValue = "10") Integer size) {

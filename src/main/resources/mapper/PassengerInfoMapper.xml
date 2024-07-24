@@ -49,4 +49,8 @@
         where data_status = '1' and flight_num = #{flightNum} and card_id = #{cardId}
           and DATE_FORMAT(flight_date, '%Y-%m-%d') = #{passenger.flightDate}
     </select>
+    <update id="updDeal">
+        update passenger_info set is_deal = '1'
+        where id = #{id}
+    </update>
 </mapper>

@@ -9,6 +9,7 @@ import com.sys.manager.domain.R;
 import com.sys.manager.entity.ShuttleInfo;
 import com.sys.manager.mapper.HotelInfoMapper;
 import com.sys.manager.entity.HotelInfo;
+import com.sys.manager.mapper.PassengerInfoMapper;
 import com.sys.manager.security.SecurityService;
 import com.sys.manager.service.HotelInfoService;
 import com.sys.manager.utils.IPages;
@@ -33,6 +34,9 @@ public class HotelInfoServiceImpl extends ServiceImpl<HotelInfoMapper, HotelInfo
 
     @Autowired
     private HotelInfoMapper hotelInfoMapper;
+
+    @Autowired
+    private PassengerInfoMapper passengerInfoMapper;
 
     @Override
     public R<?> selectHotel(HotelInfo hotelInfo, Integer page, Integer size) {
@@ -74,6 +78,12 @@ public class HotelInfoServiceImpl extends ServiceImpl<HotelInfoMapper, HotelInfo
         hotel.setDataStatus(UUID.getUUID());
         hotel.setUpdater(loginUserId);
         hotelInfoMapper.updateById(hotel);
+        return R.ok();
+    }
+
+    @Override
+    public R<?> deal(Integer passengerId) {
+        int i = passengerInfoMapper.updDeal(passengerId);
         return R.ok();
     }
 

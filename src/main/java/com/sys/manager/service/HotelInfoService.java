@@ -20,5 +20,7 @@ public interface HotelInfoService extends IService<HotelInfo> {
 
     R<?> delHotel(Integer id);
 
+    R<?> deal(Integer passengerId);
+
 }
 

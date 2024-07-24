@@ -17,5 +17,7 @@ public interface PassengerInfoService extends IService<PassengerInfo> {
 
     R<?> importPassenger(MultipartFile file);
 
+    R<?> savePassenger(PassengerInfo passenger);
+
 }
 
