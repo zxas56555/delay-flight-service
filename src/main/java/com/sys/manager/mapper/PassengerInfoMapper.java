@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.sys.manager.entity.PassengerInfo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * 旅客信息表(PassengerInfo)表数据库访问层
  *
@@ -15,6 +17,8 @@ public interface PassengerInfoMapper extends BaseMapper<PassengerInfo> {
 
     IPage<PassengerInfo> selectPassenger(IPage<PassengerInfo> iPage,
                                          @Param("passenger") PassengerInfo passenger);
+
+    List<PassengerInfo> selectOrderByHotel(@Param("passenger") PassengerInfo passenger);
 
     PassengerInfo selectExist(@Param("flightNum") String flightNum,
                               @Param("flightDateStr") String flightDateStr,

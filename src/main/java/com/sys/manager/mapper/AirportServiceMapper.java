@@ -15,9 +15,11 @@ import java.util.List;
  */
 public interface AirportServiceMapper extends BaseMapper<AirportService> {
 
+    List<Integer> selectIds(@Param("airport") AirportService airportService,
+                            @Param("shuttleIds") List<String> shuttleIds);
+
     IPage<AirportService> selectAll(IPage<AirportService> iPage,
-                                    @Param("airport") AirportService airportService,
-                                    @Param("shuttleIds") List<String> shuttleIds);
+                                    @Param("ids") List<Integer> ids);
 
 }
 

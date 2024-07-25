@@ -15,6 +15,7 @@ import com.sys.manager.security.SecurityService;
 import com.sys.manager.service.PassengerInfoService;
 import com.sys.manager.utils.DateUtils;
 import com.sys.manager.utils.ExcelReader;
+import com.sys.manager.utils.IPages;
 import com.sys.manager.utils.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,6 +25,7 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * 旅客信息表(PassengerInfo)表服务实现类
@@ -47,11 +49,26 @@ public class PassengerInfoServiceImpl extends ServiceImpl<PassengerInfoMapper, P
     public R<?> selectPassenger(PassengerInfo passenger, Integer page, Integer size) {
         IPage<PassengerInfo> iPage = new Page<>(page, size);
         iPage = passengerInfoMapper.selectPassenger(iPage, passenger);
-        return R.ok(iPage);
+        return R.ok(IPages.buildDataMap(iPage));
     }
 
     @Override
+    public R<?> selectGroupHotel(PassengerInfo passenger) {
+        List<PassengerInfo> records = passengerInfoMapper.selectOrderByHotel(passenger);
+        Map<String, List<PassengerInfo>> collect = records.stream().collect(Collectors.groupingBy(PassengerInfo::getHotelName));
+        List<Map<String, Object>> list = new ArrayList<>();
+        for (String hotelName : collect.keySet()) {
+            Map<String, Object> map = new HashMap<>();
+            map.put("hotelName", hotelName);
+            List<PassengerInfo> passengerInfos = collect.get(hotelName);
+            map.put("passengerInfos", passengerInfos);
+            map.put("num", passengerInfos.size());
+            list.add(map);
+        }
+        return R.ok(list);
+    }
 
+    @Override
     public R<?> importPassenger(MultipartFile file) {
         Integer loginUserId = securityService.getLoginUserId();
         //检查文件格式

@@ -12,15 +12,15 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 
 /**
- * 摆渡车信息表(ShuttleInfo)表实体类
+ * 服务关联酒店表(AirportHotel)表实体类
  *
  * @author makejava
- * @since 2024-07-23 13:35:33
+ * @since 2024-07-24 17:24:05
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value = "ShuttleInfo对象", description = "摆渡车信息表")
-public class ShuttleInfo implements Serializable {
+@ApiModel(value = "AirportHotel对象", description = "服务关联酒店表")
+public class AirportHotel implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,28 +28,22 @@ public class ShuttleInfo implements Serializable {
     private Integer id;
     
     /**
-     * 编号
+     * 服务表id
      */
-    @ApiModelProperty(value = "编号")
-    private String shuttleNo;
-
-    /**
-     * 名称
-     */
-    @ApiModelProperty(value = "名称")
-    private String name;
+    @ApiModelProperty(value = "服务表id")
+    private Integer airportId;
     
     /**
-     * 座位数
+     * 酒店id
      */
-    @ApiModelProperty(value = "座位数")
-    private Integer seatNum;
+    @ApiModelProperty(value = "酒店id")
+    private Integer hotelId;
     
     /**
-     * 负责人
+     * 酒店房间数
      */
-    @ApiModelProperty(value = "负责人")
-    private String headPeople;
+    @ApiModelProperty(value = "酒店房间数")
+    private Integer roomNum;
     
     /**
      * 创建人
@@ -77,8 +71,14 @@ public class ShuttleInfo implements Serializable {
 
     private String dataStatus;
 
-    @TableField(exist = false)
-    private String isGo;
+    public AirportHotel() {
+    }
+
+    public AirportHotel(Integer airportId, Integer hotelId, Integer roomNum) {
+        this.airportId = airportId;
+        this.hotelId = hotelId;
+        this.roomNum = roomNum;
+    }
 
 }
 

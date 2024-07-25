@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
  */
 @RestController
 @RequestMapping("/api/airport")
-@Api(tags = "接机/送机服务接口")
+@Api(tags = "接机-送机服务接口")
 public class AirportServiceController {
 
     /**

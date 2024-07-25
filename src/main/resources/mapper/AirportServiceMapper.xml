@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sys.manager.mapper.AirportServiceMapper">
-    <select id="selectAll" resultType="com.sys.manager.entity.AirportService">
-        select air.*, fi.flight_status as flightStatus
+    <select id="selectIds" resultType="java.lang.Integer">
+        select DISTINCT air.id
         from airport_service air
-        left flight_info fi on air.flight_id = fi.id
+        left join flight_info fi on air.flight_id = fi.id
+        left join airport_shuttle airs on air.id = airs.airport_id
         where air.data_status = '1'
         <if test="airport.flightNum != null and airport.flightNum != ''">
             and air.flight_num like concat('%', #{airport.flightNum}, '%')
         </if>
-        <if test="airport.serviceStartTime != null">
+        <if test="airport.serviceStartTime != null">-->
             and DATE_FORMAT(air.service_time, '%Y-%m-%d') >= DATE_FORMAT(#{airport.serviceStartTime}, '%Y-%m-%d')
         </if>
         <if test="airport.serviceEndTime != null">
@@ -19,11 +20,22 @@
             and fi.flight_status = #{airport.flightStatus}
         </if>
         <if test="shuttleIds != null and shuttleIds.size > 0">
-            <foreach collection="shuttleIds" item="item" open="" close="" separator="">
-                and (air.shuttle_ids like concat('%,', #{item}, ',%')
-                        or air.shuttle_ids like concat('%,', #{item})
-                        or air.shuttle_ids like concat(#{item}, ',%'))
+            and airs.shuttle_id in
+            <foreach collection="shuttleIds" item="item" open="(" close=")" separator=",">
+                #{item}
             </foreach>
         </if>
+    </select>
+    <select id="selectAll" resultType="com.sys.manager.entity.AirportService">
+        select air.*, fi.flight_status as flightStatus,
+        (select group_concat(airs.shuttle_id) from airport_shuttle airs where air.id = airs.airport_id) as shuttleIds,
+        (select group_concat(airh.hotel_id) from airport_hotel airh where air.id = airh.airport_id) as hotelIds
+        from airport_service air
+        left join flight_info fi on air.flight_id = fi.id
+        where air.data_status = '1'
+        and air.id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
     </select>
 </mapper>

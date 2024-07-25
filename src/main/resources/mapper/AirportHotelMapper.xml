@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.sys.manager.mapper.AirportHotelMapper">
+    <delete id="delByAirportId">
+        update airport_hotel set data_status = '0' where airport_id = #{airportId}
+    </delete>
+    <select id="selectByAirId" resultType="com.sys.manager.entity.AirportHotel">
+        select * from airport_hotel where data_status = '1' and airport_id = #{airportId}
+    </select>
+</mapper>

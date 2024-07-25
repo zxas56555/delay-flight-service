@@ -83,5 +83,8 @@ public class HotelInfo implements Serializable {
 
     private String dataStatus;
 
+    @TableField(exist = false)
+    private Integer roomNum;
+
 }
 

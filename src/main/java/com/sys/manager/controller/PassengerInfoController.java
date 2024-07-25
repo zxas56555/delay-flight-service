@@ -27,6 +27,12 @@ public class PassengerInfoController {
         return passengerInfoService.selectPassenger(passenger, page, size);
     }
 
+    @GetMapping("/selectGroupHotel")
+    @ApiOperation(value = "查询旅客信息根据酒店分类", httpMethod = "GET")
+    public R<?> selectGroupHotel(PassengerInfo passenger) {
+        return passengerInfoService.selectGroupHotel(passenger);
+    }
+
     @Deprecated
     @PostMapping("/import")
     @ApiOperation(value = "导入旅客信息", httpMethod = "POST")

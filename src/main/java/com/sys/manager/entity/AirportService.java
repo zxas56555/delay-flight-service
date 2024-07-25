@@ -66,25 +66,24 @@ public class AirportService implements Serializable {
      */
     @ApiModelProperty(value = "服务人数")
     private Integer serviceNum;
-    
-    /**
-     * 摆渡车ids
-     */
-    @ApiModelProperty(value = "摆渡车ids")
+
+    @TableField(exist = false)
     private String shuttleIds;
 
     @TableField(exist = false)
-    @ApiModelProperty(value = "摆渡车names")
     private String shuttleNames;
-    
-    /**
-     * 酒店分配详情
-     */
-    @ApiModelProperty(value = "酒店分配详情")
-    private String hotelDetail;
 
     @TableField(exist = false)
-    private List<HotelDetail> hotels;
+    private List<ShuttleInfo> shuttles;
+
+    @TableField(exist = false)
+    private String hotelIds;
+
+    @TableField(exist = false)
+    private String hotelNames;
+
+    @TableField(exist = false)
+    private List<HotelInfo> hotels;
     
     /**
      * 创建人

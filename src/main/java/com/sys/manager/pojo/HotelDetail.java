@@ -1,13 +1,10 @@
 package com.sys.manager.pojo;
 
+import com.sys.manager.entity.HotelInfo;
 import lombok.Data;
 
 @Data
-public class HotelDetail {
-
-    private Integer hotelId;
-
-    private String hotelName;
+public class HotelDetail extends HotelInfo {
 
     private Integer roomNum;
 

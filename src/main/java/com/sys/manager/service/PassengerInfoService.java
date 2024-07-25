@@ -15,6 +15,8 @@ public interface PassengerInfoService extends IService<PassengerInfo> {
 
     R<?> selectPassenger(PassengerInfo passenger, Integer page, Integer size);
 
+    R<?> selectGroupHotel(PassengerInfo passenger);
+
     R<?> importPassenger(MultipartFile file);
 
     R<?> savePassenger(PassengerInfo passenger);

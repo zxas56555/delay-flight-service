@@ -111,6 +111,10 @@ public class PassengerInfo implements Serializable {
      */
     @ApiModelProperty(value = "入住酒店id")
     private Integer hotelId;
+
+    @TableField(exist = false)
+    @ApiModelProperty(value = "入住酒店名称")
+    private String hotelName;
     
     /**
      * 是否已处理

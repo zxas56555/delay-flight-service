@@ -12,15 +12,15 @@ import lombok.EqualsAndHashCode;
 import java.io.Serializable;
 
 /**
- * 摆渡车信息表(ShuttleInfo)表实体类
+ * 服务与摆渡车关联表(AirportShuttle)表实体类
  *
  * @author makejava
- * @since 2024-07-23 13:35:33
+ * @since 2024-07-24 17:24:19
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
-@ApiModel(value = "ShuttleInfo对象", description = "摆渡车信息表")
-public class ShuttleInfo implements Serializable {
+@ApiModel(value = "AirportShuttle对象", description = "服务与摆渡车关联表")
+public class AirportShuttle implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -28,28 +28,16 @@ public class ShuttleInfo implements Serializable {
     private Integer id;
     
     /**
-     * 编号
+     * 服务表id
      */
-    @ApiModelProperty(value = "编号")
-    private String shuttleNo;
-
-    /**
-     * 名称
-     */
-    @ApiModelProperty(value = "名称")
-    private String name;
+    @ApiModelProperty(value = "服务表id")
+    private Integer airportId;
     
     /**
-     * 座位数
+     * 摆渡车id
      */
-    @ApiModelProperty(value = "座位数")
-    private Integer seatNum;
-    
-    /**
-     * 负责人
-     */
-    @ApiModelProperty(value = "负责人")
-    private String headPeople;
+    @ApiModelProperty(value = "摆渡车id")
+    private Integer shuttleId;
     
     /**
      * 创建人
@@ -77,8 +65,20 @@ public class ShuttleInfo implements Serializable {
 
     private String dataStatus;
 
-    @TableField(exist = false)
+    /**
+     * 是否发车
+     */
+    @ApiModelProperty(value = "是否发车")
     private String isGo;
+
+    public AirportShuttle() {
+    }
+
+    public AirportShuttle(Integer airportId, Integer shuttleId, String isGo) {
+        this.airportId = airportId;
+        this.shuttleId = shuttleId;
+        this.isGo = isGo;
+    }
 
 }
 
