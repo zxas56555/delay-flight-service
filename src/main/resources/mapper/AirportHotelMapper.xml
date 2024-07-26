@@ -7,4 +7,10 @@
     <select id="selectByAirId" resultType="com.sys.manager.entity.AirportHotel">
         select * from airport_hotel where data_status = '1' and airport_id = #{airportId}
     </select>
+    <select id="selectHotelByAirId" resultType="com.sys.manager.entity.HotelInfo">
+        select hi.*
+        from airport_hotel ah
+        left join hotel_info hi on ah.hotel_id = hi.id
+        where ah.data_status = '1' and ah.airport_id = #{airportId}
+    </select>
 </mapper>

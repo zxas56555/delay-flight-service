@@ -2,6 +2,7 @@ package com.sys.manager.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.sys.manager.entity.AirportHotel;
+import com.sys.manager.entity.HotelInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -17,6 +18,8 @@ public interface AirportHotelMapper extends BaseMapper<AirportHotel> {
     void delByAirportId(@Param("airportId") Integer id);
 
     List<AirportHotel> selectByAirId(@Param("airportId") Integer id);
+
+    List<HotelInfo> selectHotelByAirId(@Param("airportId") Integer airportId);
 
 }
 

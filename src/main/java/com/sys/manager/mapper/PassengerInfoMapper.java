@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.sys.manager.entity.PassengerInfo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -21,10 +22,15 @@ public interface PassengerInfoMapper extends BaseMapper<PassengerInfo> {
     List<PassengerInfo> selectOrderByHotel(@Param("passenger") PassengerInfo passenger);
 
     PassengerInfo selectExist(@Param("flightNum") String flightNum,
-                              @Param("flightDateStr") String flightDateStr,
+                              @Param("flightDate") Date flightDate,
                               @Param("cardId") String cardId);
 
     int updDeal(@Param("id") Integer passengerId);
+
+    int selectPassengerCount(@Param("flightNum") String flightNum,
+                            @Param("flightDate")Date serviceTime,
+                            @Param("flightType") String flightType,
+                            @Param("shuttleId") Integer shuttleId);
 
 }
 

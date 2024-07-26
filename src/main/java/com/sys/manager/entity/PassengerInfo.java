@@ -160,5 +160,9 @@ public class PassengerInfo implements Serializable {
     @ApiModelProperty(value = "送机摆渡车id")
     private String sendShuttleId;
 
+
+    @TableField(exist = false)
+    private Integer airShuttleId;
+
 }
 

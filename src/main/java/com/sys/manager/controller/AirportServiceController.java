@@ -32,9 +32,9 @@ public class AirportServiceController {
      * @param airportService 查询实体
      * @return 所有数据
      */
-    @GetMapping("/query")
-    @ApiOperation(value = "查询服务", httpMethod = "GET")
-    public R<?> selectAll(AirportService airportService,
+    @PostMapping("/query")
+    @ApiOperation(value = "查询服务", httpMethod = "POST")
+    public R<?> selectAll(@RequestBody AirportService airportService,
                           @RequestParam(required = false, defaultValue = "1") Integer page,
                           @RequestParam(required = false, defaultValue = "10") Integer size) {
         return airportServiceService.selectAll(airportService, page, size);

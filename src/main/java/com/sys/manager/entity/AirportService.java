@@ -48,15 +48,15 @@ public class AirportService implements Serializable {
      * 服务时间
      */
     @ApiModelProperty(value = "服务时间")
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm",timezone = "GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date serviceTime;
 
     @TableField(exist = false)
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm",timezone = "GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date serviceStartTime;
 
     @TableField(exist = false)
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm",timezone = "GMT+8")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     private Date serviceEndTime;
     
     /**

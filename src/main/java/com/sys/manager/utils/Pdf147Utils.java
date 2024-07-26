@@ -15,7 +15,7 @@ public class Pdf147Utils {
 
     public static void main(String[] args) {
         try {
-            File imageFile = new File("C:\\Users\\12097\\Desktop\\222.jpg");
+            File imageFile = new File("C:\\Users\\12097\\Desktop\\111.jpg");
             BufferedImage bufferedImage = ImageIO.read(imageFile);
             BufferedImageLuminanceSource source = new BufferedImageLuminanceSource(bufferedImage);
             BinaryBitmap bitmap = new BinaryBitmap(new HybridBinarizer(source));

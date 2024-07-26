@@ -1,6 +1,7 @@
 package com.sys.manager.controller;
 
 import com.sys.manager.domain.R;
+import com.sys.manager.entity.AirportShuttle;
 import com.sys.manager.entity.ShuttleInfo;
 import com.sys.manager.service.ShuttleInfoService;
 import io.swagger.annotations.Api;
@@ -40,6 +41,18 @@ public class ShuttleInfoController {
     @ApiOperation(value = "删除摆渡车信息", httpMethod = "POST")
     public R<?> delShuttle(@RequestParam Integer id) {
         return shuttleInfoService.delShuttle(id);
+    }
+
+    @PostMapping("/isGo")
+    @ApiOperation(value = "发车/到站", httpMethod = "POST")
+    public R<?> isGo(@RequestBody AirportShuttle airShuttle) {
+        return shuttleInfoService.isGo(airShuttle);
+    }
+
+    @GetMapping("/airShuttleInfo")
+    @ApiOperation(value = "扫码页面信息", httpMethod = "GET")
+    public R<?> airShuttleInfo(@RequestParam Integer airShuttleId) {
+        return shuttleInfoService.airShuttleInfo(airShuttleId);
     }
 
 }

@@ -19,9 +19,9 @@ public class PassengerInfoController {
     @Autowired
     private PassengerInfoService passengerInfoService;
 
-    @GetMapping("/selectPassenger")
-    @ApiOperation(value = "查询旅客信息", httpMethod = "GET")
-    public R<?> selectPassenger(PassengerInfo passenger,
+    @PostMapping("/selectPassenger")
+    @ApiOperation(value = "查询旅客信息", httpMethod = "POST")
+    public R<?> selectPassenger(@RequestBody PassengerInfo passenger,
                                 @RequestParam(required = false, defaultValue = "1") Integer page,
                                 @RequestParam(required = false, defaultValue = "10") Integer size) {
         return passengerInfoService.selectPassenger(passenger, page, size);

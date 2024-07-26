@@ -2,6 +2,7 @@ package com.sys.manager.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.sys.manager.domain.R;
+import com.sys.manager.entity.AirportShuttle;
 import com.sys.manager.entity.ShuttleInfo;
 
 /**
@@ -19,6 +20,10 @@ public interface ShuttleInfoService extends IService<ShuttleInfo> {
     R<?> saveShuttle(ShuttleInfo shuttleInfo);
 
     R<?> delShuttle(Integer id);
+
+    R<?> isGo(AirportShuttle airShuttle);
+
+    R<?> airShuttleInfo(Integer id);
 
 }
 

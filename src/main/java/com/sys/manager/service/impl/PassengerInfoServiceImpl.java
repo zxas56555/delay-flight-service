@@ -6,11 +6,11 @@ import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sys.manager.domain.R;
-import com.sys.manager.entity.AdminInfo;
-import com.sys.manager.entity.FlightInfo;
+import com.sys.manager.entity.*;
+import com.sys.manager.mapper.AirportServiceMapper;
+import com.sys.manager.mapper.AirportShuttleMapper;
 import com.sys.manager.mapper.FlightInfoMapper;
 import com.sys.manager.mapper.PassengerInfoMapper;
-import com.sys.manager.entity.PassengerInfo;
 import com.sys.manager.security.SecurityService;
 import com.sys.manager.service.PassengerInfoService;
 import com.sys.manager.utils.DateUtils;
@@ -45,6 +45,12 @@ public class PassengerInfoServiceImpl extends ServiceImpl<PassengerInfoMapper, P
     @Autowired
     private FlightInfoMapper flightInfoMapper;
 
+    @Autowired
+    private AirportShuttleMapper airportShuttleMapper;
+
+    @Autowired
+    private AirportServiceMapper airportServiceMapper;
+
     @Override
     public R<?> selectPassenger(PassengerInfo passenger, Integer page, Integer size) {
         IPage<PassengerInfo> iPage = new Page<>(page, size);
@@ -54,6 +60,16 @@ public class PassengerInfoServiceImpl extends ServiceImpl<PassengerInfoMapper, P
 
     @Override
     public R<?> selectGroupHotel(PassengerInfo passenger) {
+        Integer airShuttleId = passenger.getAirShuttleId();
+        AirportShuttle airportShuttle = airportShuttleMapper.selectById(airShuttleId);
+        AirportService service = airportServiceMapper.selectById(airportShuttle.getAirportId());
+        passenger.setFlightNum(service.getFlightNum());
+        passenger.setFlightDate(service.getServiceTime());
+        if ("1".equals(service.getFlightType())) {
+            passenger.setReceiveShuttleId(airportShuttle.getShuttleId() + "");
+        } else if ("2".equals(service.getFlightType())) {
+            passenger.setSendShuttleId(airportShuttle.getShuttleId() + "");
+        }
         List<PassengerInfo> records = passengerInfoMapper.selectOrderByHotel(passenger);
         Map<String, List<PassengerInfo>> collect = records.stream().collect(Collectors.groupingBy(PassengerInfo::getHotelName));
         List<Map<String, Object>> list = new ArrayList<>();
@@ -143,7 +159,7 @@ public class PassengerInfoServiceImpl extends ServiceImpl<PassengerInfoMapper, P
                 passenger.setStartCity(flightInfo.getStartCity());
                 passenger.setArriveCity(flightInfo.getArriveCity());
                 // 根据身份证号+航班号+乘机时间  查询并更新信息
-                PassengerInfo exist = passengerInfoMapper.selectExist(flightNum, flightDateStr, cardId);
+                PassengerInfo exist = passengerInfoMapper.selectExist(flightNum, flightDate, cardId);
                 // 如果是未处理，则更新信息， 若已处理，则不进行操作
                 if (exist == null) {
                     passenger.setCreator(loginUserId);
@@ -183,8 +199,16 @@ public class PassengerInfoServiceImpl extends ServiceImpl<PassengerInfoMapper, P
     @Override
     public R<?> savePassenger(PassengerInfo passenger) {
         Integer loginUserId = securityService.getLoginUserId();
-        PassengerInfo exist = passengerInfoMapper.selectExist(passenger.getFlightNum(), passenger.getFlightDateStr(), passenger.getCardId());
+        PassengerInfo exist = passengerInfoMapper.selectExist(passenger.getFlightNum(), passenger.getFlightDate(), passenger.getCardId());
         if (exist == null) {
+            Integer airShuttleId = passenger.getAirShuttleId();
+            AirportShuttle airportShuttle = airportShuttleMapper.selectById(airShuttleId);
+            AirportService airportService = airportServiceMapper.selectById(airportShuttle.getAirportId());
+            if ("1".equals(airportService.getFlightType())) {
+                passenger.setReceiveShuttleId(airportShuttle.getShuttleId() + "");
+            } else {
+                passenger.setSendShuttleId(airportShuttle.getShuttleId() + "");
+            }
             passenger.setCreator(loginUserId);
             passengerInfoMapper.insert(passenger);
             return R.ok();

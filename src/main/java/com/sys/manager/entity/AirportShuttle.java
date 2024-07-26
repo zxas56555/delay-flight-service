@@ -66,9 +66,9 @@ public class AirportShuttle implements Serializable {
     private String dataStatus;
 
     /**
-     * 是否发车
+     * 0未发车/1已发车/2到站
      */
-    @ApiModelProperty(value = "是否发车")
+    @ApiModelProperty(value = "0未发车/1已发车/2到站")
     private String isGo;
 
     public AirportShuttle() {

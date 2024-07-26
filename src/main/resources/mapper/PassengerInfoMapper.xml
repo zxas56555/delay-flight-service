@@ -2,46 +2,48 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.sys.manager.mapper.PassengerInfoMapper">
     <select id="selectPassenger" resultType="com.sys.manager.entity.PassengerInfo">
-        select * from passenger_info
-        where data_status = '1'
+        select pi.*, hi.hotel_name as hotelName
+        from passenger_info pi
+        left join hotel_info hi on pi.hotel_id = hi.id
+        where pi.data_status = '1'
         <if test="passenger.name != null and passenger.name != ''">
-            and name like concat('%', #{passenger.name}, '%')
+            and pi.name like concat('%', #{passenger.name}, '%')
         </if>
         <if test="passenger.sex != null and passenger.sex != ''">
-            and sex = #{passenger.sex}
+            and pi.sex = #{passenger.sex}
         </if>
         <if test="passenger.cardId != null and passenger.cardId != ''">
-            and card_id like concat('%', #{passenger.cardId}, '%')
+            and pi.card_id like concat('%', #{passenger.cardId}, '%')
         </if>
         <if test="passenger.flightNum != null and passenger.flightNum != ''">
-            and flight_num like concat('%', #{passenger.flightNum}, '%')
+            and pi.flight_num like concat('%', #{passenger.flightNum}, '%')
         </if>
         <if test="passenger.flightDate != null">
-            and DATE_FORMAT(flight_date, '%Y-%m-%d') = DATE_FORMAT(#{passenger.flightDate}, '%Y-%m-%d')
+            and DATE_FORMAT(pi.flight_date, '%Y-%m-%d') = DATE_FORMAT(#{passenger.flightDate}, '%Y-%m-%d')
         </if>
         <if test="passenger.flightStartDate != null">
-            and DATE_FORMAT(flight_date, '%Y-%m-%d') >= DATE_FORMAT(#{passenger.flightStartDate}, '%Y-%m-%d')
+            and DATE_FORMAT(pi.flight_date, '%Y-%m-%d') >= DATE_FORMAT(#{passenger.flightStartDate}, '%Y-%m-%d')
         </if>
         <if test="passenger.flightEndDate != null">
-            and DATE_FORMAT(flight_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{passenger.flightEndDate}, '%Y-%m-%d')
+            and DATE_FORMAT(pi.flight_date, '%Y-%m-%d') &lt;= DATE_FORMAT(#{passenger.flightEndDate}, '%Y-%m-%d')
         </if>
         <if test="passenger.boardingGate != null and passenger.boardingGate != ''">
-            and boarding_gate = #{passenger.boardingGate}
+            and pi.boarding_gate = #{passenger.boardingGate}
         </if>
         <if test="passenger.shippingSpace != null and passenger.shippingSpace != ''">
-            and shipping_space = #{passenger.shippingSpace}
+            and pi.shipping_space = #{passenger.shippingSpace}
         </if>
         <if test="passenger.seat != null and passenger.seat != ''">
-            and seat = #{passenger.seat}
+            and pi.seat = #{passenger.seat}
         </if>
         <if test="passenger.startCity != null and passenger.startCity != ''">
-            and start_city like concat('%', #{passenger.startCity}, '%')
+            and pi.start_city like concat('%', #{passenger.startCity}, '%')
         </if>
         <if test="passenger.arriveCity != null and passenger.arriveCity != ''">
-            and arrive_city like concat('%', #{passenger.arriveCity}, '%')
+            and pi.arrive_city like concat('%', #{passenger.arriveCity}, '%')
         </if>
         <if test="passenger.isDeal != null and passenger.isDeal != ''">
-            and is_deal = #{passenger.isDeal}
+            and pi.is_deal = #{passenger.isDeal}
         </if>
     </select>
     <select id="selectOrderByHotel" resultType="com.sys.manager.entity.PassengerInfo">
@@ -93,10 +95,21 @@
     <select id="selectExist" resultType="com.sys.manager.entity.PassengerInfo">
         select * from passenger_info
         where data_status = '1' and flight_num = #{flightNum} and card_id = #{cardId}
-          and DATE_FORMAT(flight_date, '%Y-%m-%d') = #{passenger.flightDate}
+          and DATE_FORMAT(flight_date, '%Y-%m-%d') = DATE_FORMAT(#{flightDate}, '%Y-%m-%d')
     </select>
     <update id="updDeal">
         update passenger_info set is_deal = '1'
         where id = #{id}
     </update>
+    <select id="selectPassengerCount" resultType="java.lang.Integer">
+        select count(*) from passenger_info
+        where data_status = '1' and flight_num = #{flightNum}
+          and DATE_FORMAT(flight_date, '%Y-%m-%d') = DATE_FORMAT(#{flightDate}, '%Y-%m-%d')
+        <if test='flightType != null and flightType == "1"'>
+            and receive_shuttle_id = #{shuttleId}
+        </if>
+        <if test='flightType != null and flightType == "2"'>
+            and send_shuttle_id = #{shuttleId}
+        </if>
+    </select>
 </mapper>
