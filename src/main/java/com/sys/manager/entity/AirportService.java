@@ -4,8 +4,6 @@ import java.util.Date;
 
 import com.baomidou.mybatisplus.annotation.*;
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.sys.manager.domain.R;
-import com.sys.manager.pojo.HotelDetail;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -110,6 +108,11 @@ public class AirportService implements Serializable {
     private Date updateTime;
 
     private String dataStatus;
+
+    /**
+     * 接机1/送机2
+     */
+    private String flightType;
 
 }
 

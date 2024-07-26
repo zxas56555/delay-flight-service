@@ -1,7 +1,5 @@
 package com.sys.manager.service.impl;
 
-import cn.hutool.json.JSONUtil;
-import com.alibaba.fastjson.JSON;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
@@ -10,10 +8,8 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.sys.manager.domain.R;
 import com.sys.manager.entity.*;
 import com.sys.manager.mapper.*;
-import com.sys.manager.pojo.HotelDetail;
 import com.sys.manager.security.SecurityService;
 import com.sys.manager.service.AirportServiceService;
-import com.sys.manager.utils.BeanUtils;
 import com.sys.manager.utils.IPages;
 import com.sys.manager.utils.StringUtils;
 import com.sys.manager.utils.text.UUID;
